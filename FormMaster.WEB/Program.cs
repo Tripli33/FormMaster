@@ -1,6 +1,10 @@
+using FormMaster.WEB.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
+
+builder.Services.AddFormMasterDbContext("DbConnection");
 
 var app = builder.Build();
 
