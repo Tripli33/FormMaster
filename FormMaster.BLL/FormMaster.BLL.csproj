@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FormMaster.DAL\FormMaster.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
