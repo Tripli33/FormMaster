@@ -6,6 +6,8 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddFormMasterDbContext("DbConnection");
 
+builder.Services.AddIdentity();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

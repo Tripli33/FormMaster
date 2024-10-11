@@ -1,8 +1,9 @@
-﻿namespace FormMaster.DAL.Entities;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User
+namespace FormMaster.DAL.Entities;
+
+public class User : IdentityUser<int>
 {
-    public int UserId { get; set; }
     public ICollection<Template>? Templates { get; set; }
     public ICollection<Form>? Forms { get; set; }
     public ICollection<Template>? AllowedTemplates { get; set; }
