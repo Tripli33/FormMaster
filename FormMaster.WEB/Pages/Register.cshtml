@@ -1,0 +1,25 @@
+﻿@page
+@model FormMaster.WEB.Pages.RegisterModel
+@{
+    ViewData["Title"] = "Register page";
+}
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="RegistrationDto.UserName"></label>
+        <input class="form-control" asp-for="RegistrationDto.UserName" />
+        <span class="text-danger validation-message" asp-validation-for="RegistrationDto.UserName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="RegistrationDto.Email"></label>
+        <input class="form-control" asp-for="RegistrationDto.Email" />
+        <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Email"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="RegistrationDto.Password"></label>
+        <input class="form-control" asp-for="RegistrationDto.Password" />
+        <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Password"></span>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-success">Register</button>
+</form>
