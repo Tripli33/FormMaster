@@ -1,5 +1,6 @@
 using FormMaster.BLL.DTOs;
 using FormMaster.BLL.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -21,7 +22,7 @@ public class RegisterModel(IAuthService authService) : PageModel
                 return RedirectToPage("Login");
             }
 
-            ModelState.AddModelError("RegistrationDto.Email", "Email is already in use");
+            ModelState.AddModelError(string.Empty, result.Errors.First().Description);
         }
 
         return Page();

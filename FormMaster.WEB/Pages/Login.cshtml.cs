@@ -21,7 +21,7 @@ public class LoginModel(IAuthService authService) : PageModel
                 return RedirectToPage("Index");
             }
 
-            ModelState.AddModelError("LoginDto.Password", "Incorrect login or password");
+            ModelState.AddModelError(string.Empty, "Incorrect login or password");
         }
 
         return Page();
