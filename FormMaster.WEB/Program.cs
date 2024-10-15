@@ -6,7 +6,13 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddFormMasterDbContext("DbConnection");
 
+builder.Services.AddAutoMapper();
+
+builder.Services.AddServices();
+
 builder.Services.AddIdentity();
+
+builder.Services.ConfigureApplicationCookie();
 
 var app = builder.Build();
 
@@ -21,6 +27,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
