@@ -2,15 +2,8 @@
 
 namespace FormMaster.DAL.Entities;
 
-public class UserRole : IdentityRole<int>
+public class UserRole : IdentityUserRole<int>
 {
-    public UserRole()
-    {
-        
-    }
-
-    public UserRole(string roleName) : base(roleName)
-    {
-        
-    }
+    public User? User { get; set; }
+    public Role? Role { get; set; }
 }

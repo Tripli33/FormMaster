@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FormMaster.DAL.DataContext.Seeds;
 
-public class IdentityDataSeeder(UserManager<User> userManager, RoleManager<UserRole> roleManager) :
+public class IdentityDataSeeder(UserManager<User> userManager, RoleManager<Role> roleManager) :
     IIdentityDataSeeder
 {
     public async Task SeedRolesAsync()
@@ -14,7 +14,7 @@ public class IdentityDataSeeder(UserManager<User> userManager, RoleManager<UserR
         {
             if (!await roleManager.RoleExistsAsync(roleName))
             {
-                await roleManager.CreateAsync(new UserRole(roleName));
+                await roleManager.CreateAsync(new Role(roleName));
             }
         }
     }
