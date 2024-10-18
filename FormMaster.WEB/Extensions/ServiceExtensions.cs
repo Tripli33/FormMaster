@@ -1,4 +1,4 @@
-﻿using FormMaster.BLL.Services;
+using FormMaster.BLL.Services;
 using FormMaster.DAL.DataContext;
 using FormMaster.DAL.DataContext.Seeds;
 using FormMaster.DAL.Entities;
@@ -54,6 +54,7 @@ public static class ServiceExtensions
     public static void AddServices(this IServiceCollection services)
     {
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IAdminService, AdminService>();
     }
 
     public static void AddHelpers(this IServiceCollection services)
