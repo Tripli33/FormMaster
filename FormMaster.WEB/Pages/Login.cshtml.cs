@@ -10,6 +10,13 @@ public class LoginModel(IAuthService authService) : PageModel
     [BindProperty]
     public UserLoginDto? LoginDto { get; set; }
 
+    public async Task<IActionResult> OnGetLogoutAsync()
+    {
+        await authService.LogoutAsync();
+
+        return RedirectToPage("Login");
+    }
+
     public async Task<IActionResult> OnPostAsync()
     {
         if (ModelState.IsValid)
