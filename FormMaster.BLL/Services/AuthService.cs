@@ -21,11 +21,31 @@ public class AuthService(UserManager<User> userManager, SignInManager<User> sign
         return result;
     }
 
-    public Task<IdentityResult> RegisterAsync(UserRegistrationDto registrationDto)
+    public async Task LogoutAsync()
+    {
+        await signInManager.SignOutAsync();
+    }
+
+    public async Task<IdentityResult> RegisterAsync(UserRegistrationDto registrationDto)
     {
         var user = mapper.Map<User>(registrationDto);
-        var result = userManager.CreateAsync(user, registrationDto.Password!);
+        var result = await userManager.CreateAsync(user, registrationDto.Password!);
+
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(user, IdentityRoleConstants.User.ToString());
+        }
 
         return result;
+    }
+
+    public async Task UpdateUserClaimsById(int id)
+    {
+        var user = await userManager.FindByIdAsync(id.ToString());
+
+        if (user is not null)
+        {
+            await signInManager.RefreshSignInAsync(user);
+        }
     }
 }
