@@ -1,6 +1,5 @@
 using FormMaster.BLL.DTOs;
 using FormMaster.BLL.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -27,6 +26,4 @@ public class RegisterModel(IAuthService authService) : PageModel
 
         return Page();
     }
-
-
 }

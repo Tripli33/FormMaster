@@ -1,4 +1,4 @@
-using FormMaster.BLL.Services;
+﻿using FormMaster.BLL.Services;
 using FormMaster.DAL.DataContext;
 using FormMaster.DAL.DataContext.Seeds;
 using FormMaster.DAL.Entities;
@@ -24,7 +24,7 @@ public static class ServiceExtensions
 
     public static void AddIdentity(this IServiceCollection services)
     {
-        services.AddIdentity<User, UserRole>(options =>
+        services.AddIdentity<User, Role>(options =>
         {
             options.User.RequireUniqueEmail = true;
             options.Password.RequireNonAlphanumeric = false;

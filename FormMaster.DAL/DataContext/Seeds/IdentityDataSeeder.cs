@@ -29,7 +29,8 @@ public class IdentityDataSeeder(UserManager<User> userManager, RoleManager<Role>
         var result = await userManager.CreateAsync(admin, "root");
 
         if (result.Succeeded)
-        { 
+        {
+            await userManager.AddToRoleAsync(admin, IdentityRoleConstants.User.ToString());
             await userManager.AddToRoleAsync(admin, IdentityRoleConstants.Admin.ToString());
         }
     }
