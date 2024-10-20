@@ -1,0 +1,98 @@
+﻿@page
+@model FormMaster.WEB.Pages.TemplateConstructorModel
+@{
+}
+
+<form method="post">
+    <button type="submit">Save</button>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="body-tab" data-bs-toggle="tab" data-bs-target="#body" type="button" role="tab" aria-controls="body" aria-selected="true">Body</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="questions-tab" data-bs-toggle="tab" data-bs-target="#questions" type="button" role="tab" aria-controls="questions" aria-selected="false">Questions</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="body" role="tabpanel" aria-labelledby="body-tab">
+            <div class="form-group">
+                <label asp-for="RegistrationDto.Name"></label>
+                <input class="form-control" asp-for="RegistrationDto.Name" />
+                <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Name"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegistrationDto.TopicId"></label>
+                <select asp-for="RegistrationDto.TopicId" asp-items="@Model.Topics" placeholder="select members" class="form-control dropdown">
+                </select>
+                <span class="text-danger validation-message" asp-validation-for="RegistrationDto.TopicId"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegistrationDto.Description"></label>
+                <input class="form-control" asp-for="RegistrationDto.Description" />
+                <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Description"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegistrationDto.IsPublic"></label>
+                <input class="form-check-label" id="is-public-check-box" asp-for="RegistrationDto.IsPublic" />
+            </div>
+            <div class="form-group">
+                <label asp-for="RegistrationDto.Tags"></label>
+                <input id="tags-input" asp-for="RegistrationDto.Tags" />
+                <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Tags"></span>
+            </div>
+            <div class="form-group" id="allowed-users">
+                <label asp-for="RegistrationDto.AllowedUsers"></label>
+                <input id="users-input" asp-for="RegistrationDto.AllowedUsers" />
+                <span class="text-danger validation-message" asp-validation-for="RegistrationDto.AllowedUsers"></span>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="questions" role="tabpanel" aria-labelledby="questions-tab">
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/@@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
+    <script>
+        const tagsFromViewData = @Html.Raw(ViewData["Tags"]);
+        const usersFromViewData = @Html.Raw(ViewData["Users"]);
+        const tagsInput = document.querySelector('#tags-input');
+        const usersInput = document.querySelector('#users-input');
+        const tagsTagify = new Tagify(tagsInput, {
+            whitelist: tagsFromViewData,
+            dropdown: {
+                maxItems: 10,
+                classname: 'tags-look',
+                enabled: 0,
+                closeOnSelect: false
+            }
+        });
+        const usersTagify = new Tagify(usersInput, {
+            whitelist: usersFromViewData,
+            enforceWhitelist: true,
+            dropdown: {
+                maxItems: 10,
+                classname: 'tags-look',
+                enabled: 0,
+                closeOnSelect: false
+            }
+        });
+    </script>
+
+    <script>
+        const allowedUsersSection = document.querySelector('#allowed-users');
+        const isPublicCheckbox = document.querySelector('#is-public-check-box');
+
+        isPublicCheckbox.addEventListener("change", () => {
+            if (isPublicCheckbox.checked) {
+                allowedUsersSection.style.display = "none";
+            } else {
+                allowedUsersSection.style.display = "block";
+            }
+        });
+    </script>
+}
+    
