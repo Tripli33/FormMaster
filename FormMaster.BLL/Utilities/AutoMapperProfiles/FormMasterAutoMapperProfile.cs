@@ -9,5 +9,6 @@ public class FormMasterAutoMapperProfile : Profile
     public FormMasterAutoMapperProfile()
     {
         CreateMap<UserRegistrationDto, User>();
+        CreateMap<Topic, TopicTemplateManipulationDto>();
     }
 }
