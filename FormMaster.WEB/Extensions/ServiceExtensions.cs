@@ -1,7 +1,8 @@
-﻿using FormMaster.BLL.Services;
+using FormMaster.BLL.Services;
 using FormMaster.DAL.DataContext;
 using FormMaster.DAL.DataContext.Seeds;
 using FormMaster.DAL.Entities;
+using FormMaster.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace FormMaster.WEB.Extensions;
@@ -49,6 +50,12 @@ public static class ServiceExtensions
     public static void AddAutoMapper(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(BLL.AssemblyReference).Assembly);
+    }
+
+    public static void AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<ITopicRepository, TopicRepository>();
     }
 
     public static void AddServices(this IServiceCollection services)

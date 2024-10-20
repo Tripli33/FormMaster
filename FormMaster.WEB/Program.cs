@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddFormMasterDbContext("DbConnection");
+builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddHelpers();
 
