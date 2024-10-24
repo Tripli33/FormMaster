@@ -11,6 +11,7 @@ builder.Services.AddHelpers();
 
 builder.Services.AddAutoMapper();
 
+builder.Services.AddElasticSearch();
 
 builder.Services.AddIdentity();
 builder.Services.ConfigureApplicationCookie();

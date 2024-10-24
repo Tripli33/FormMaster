@@ -76,4 +76,22 @@ public static class ServiceExtensions
     {
         services.AddScoped<IIdentityDataSeeder, IdentityDataSeeder>();
     }
+
+    public static void AddElasticSearch(this IServiceCollection service)
+    {
+        var apiKey = Environment.GetEnvironmentVariable("ELASTIC_API_KEY");
+        var url = Environment.GetEnvironmentVariable("ELASTIC_URL");
+        var settings =
+            new ElasticsearchClientSettings(
+                    new Uri(url))
+                .DefaultIndex("template")
+                .Authentication(new ApiKey(apiKey))
+                .EnableDebugMode()
+                .PrettyJson()
+                .DisableDirectStreaming();
+
+        var client = new ElasticsearchClient(settings);
+
+        service.AddSingleton<ITemplateSearchService>(new TemplateSearchService(client));
+    }
 }
