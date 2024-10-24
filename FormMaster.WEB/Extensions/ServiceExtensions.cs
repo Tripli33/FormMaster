@@ -15,8 +15,9 @@ public static class ServiceExtensions
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionStringName);
 
-        var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
-        var connectionString = configuration!.GetConnectionString(connectionStringName);
+        //var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
+        //var connectionString = configuration!.GetConnectionString(connectionStringName);
+        var connectionString = Environment.GetEnvironmentVariable("POSTGRES_DB_CONNECTION");
 
         services.AddDbContext<FormMasterDbContext>(options =>
         {
