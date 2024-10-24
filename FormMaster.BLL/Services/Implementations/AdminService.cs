@@ -1,13 +1,14 @@
 ﻿using FormMaster.BLL.DTOs;
+using FormMaster.BLL.Services.Contracts;
 using FormMaster.DAL.DataContext;
 using FormMaster.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace FormMaster.BLL.Services;
+namespace FormMaster.BLL.Services.Implementations;
 
 // TODO: DON'T USE CONTEXT IN BLL LAYER
-public class AdminService(FormMasterDbContext context, UserManager<User> userManager, 
+public class AdminService(FormMasterDbContext context, UserManager<User> userManager,
     RoleManager<Role> roleManager) : IAdminService
 {
     public async Task BlockUsersByIdAsync(IEnumerable<int> ids)
@@ -52,7 +53,7 @@ public class AdminService(FormMasterDbContext context, UserManager<User> userMan
             Email = g.Key.Email,
             IsBlocked = g.Key.LockoutEnd != null,
             IsAdmin = g.Any(ur => ur.RoleId == adminRole!.Id)
-        }).ToListAsync(); 
+        }).ToListAsync();
 
         return userDtos;
     }

@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using FormMaster.BLL.DTOs;
+using FormMaster.BLL.Services.Contracts;
 using FormMaster.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace FormMaster.BLL.Services;
+namespace FormMaster.BLL.Services.Implementations;
 
-public class AuthService(UserManager<User> userManager, SignInManager<User> signInManager, 
+public class AuthService(UserManager<User> userManager, SignInManager<User> signInManager,
     IMapper mapper) : IAuthService
 {
     public async Task<SignInResult> LoginAsync(UserLoginDto loginDto)

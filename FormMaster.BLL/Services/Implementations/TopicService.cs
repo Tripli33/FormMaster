@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using FormMaster.BLL.DTOs;
-using FormMaster.DAL.Repositories;
+using FormMaster.DAL.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace FormMaster.BLL.Services;
+namespace FormMaster.BLL.Services.Implementations;
 
 public class TopicService(ITopicRepository topicRepository, IMapper mapper) : ITopicService
 {

@@ -1,6 +1,6 @@
 ﻿using FormMaster.BLL.DTOs;
 
-namespace FormMaster.BLL.Services;
+namespace FormMaster.BLL.Services.Contracts;
 
 public interface IAdminService
 {

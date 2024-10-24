@@ -1,7 +1,7 @@
 ﻿using FormMaster.BLL.DTOs;
 using Microsoft.AspNetCore.Identity;
 
-namespace FormMaster.BLL.Services;
+namespace FormMaster.BLL.Services.Contracts;
 
 public interface IAuthService
 {
