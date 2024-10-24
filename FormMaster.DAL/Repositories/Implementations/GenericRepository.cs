@@ -1,13 +1,20 @@
 ﻿using FormMaster.DAL.DataContext;
+using FormMaster.DAL.Repositories.Contracts;
 using System.Linq.Expressions;
 
-namespace FormMaster.DAL.Repositories;
+namespace FormMaster.DAL.Repositories.Implementations;
 
 public class GenericRepository<T>(FormMasterDbContext context) : IGenericRepository<T> where T : class
 {
     public async Task Add(T entity)
     {
         await context.Set<T>().AddAsync(entity);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task AddRange(ICollection<T> entities)
+    {
+        await context.Set<T>().AddRangeAsync(entities);
         await context.SaveChangesAsync();
     }
 
@@ -24,7 +31,7 @@ public class GenericRepository<T>(FormMasterDbContext context) : IGenericReposit
 
     public IQueryable<T> GetByCondition(Expression<Func<T, bool>> expression)
     {
-        return context.Set<T>().Where(expression);    
+        return context.Set<T>().Where(expression);
     }
 
     public T? GetById(int id)
