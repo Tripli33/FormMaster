@@ -1,9 +1,15 @@
+﻿using Elastic.Clients.Elasticsearch;
+using Elastic.Transport;
 using FormMaster.BLL.Services;
+using FormMaster.BLL.Services.Contracts;
+using FormMaster.BLL.Services.Implementations;
 using FormMaster.DAL.DataContext;
 using FormMaster.DAL.DataContext.Seeds;
 using FormMaster.DAL.DataContext.Triggers;
 using FormMaster.DAL.Entities;
 using FormMaster.DAL.Repositories;
+using FormMaster.DAL.Repositories.Contracts;
+using FormMaster.DAL.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 namespace FormMaster.WEB.Extensions;
@@ -62,6 +68,9 @@ public static class ServiceExtensions
     {
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<ITopicRepository, TopicRepository>();
+        services.AddScoped<ITemplateRepository, TemplateRepository>();
+        services.AddScoped<IQuestionRepository, QuestionRepository>();
+        services.AddScoped<IFormRepository, FormRepository>();
     }
 
     public static void AddServices(this IServiceCollection services)
@@ -71,6 +80,9 @@ public static class ServiceExtensions
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITopicService, TopicService>();
+        services.AddScoped<ITemplateService, TemplateService>();
+        services.AddScoped<IQuestionService, QuestionService>();
+        services.AddScoped<IFormService, FormService>();
     }
 
     public static void AddHelpers(this IServiceCollection services)
