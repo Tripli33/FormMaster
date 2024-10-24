@@ -7,7 +7,17 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <div class="container text-center mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card border-0 shadow">
+                    <div class="card-body">
+                        <div id="word-cloud" class="w-100" style="height: 15vw;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <h4 class="fw-bold">Top 5 Templates</h4>
     <table class="table table-striped">
         <thead>
@@ -65,3 +75,28 @@
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.0.6/wordcloud2.min.js"></script>
+    <script>
+        const drawWordCloud = () => {
+            var viewData = @Html.Raw(ViewData["Tags"]);
+            const tags = viewData.map(tag => [tag, Math.min(Math.max(5, 15), 40)]);
+
+            WordCloud(document.getElementById('word-cloud'), {
+                list: tags,
+                gridSize: 10,
+                weightFactor: 1.5,
+                color: 'random-dark',
+                shape: "circle",
+                ellipticity: 0.5,
+                shrinkToFit: true,
+                click: async (item) => {
+                    window.location.href = `SearchResult?tag=${item[0]}`;
+                }
+            });
+        };
+
+        drawWordCloud();
+    </script>
+}
