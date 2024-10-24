@@ -21,9 +21,23 @@ public class TemplateService(ITemplateRepository templateRepository,
         var questions = mapper.Map<ICollection<Question>>(questionsDto);
         if (template != null)
         {
-            // TODO Fix problem with question constructor 
-            template.Questions!.Clear();
-            template.Questions = questions;
+            if (template.Questions == null || template.Questions.Count == 0)
+            {
+                template.Questions = questions;
+            }
+            else
+            {
+                foreach (var question in questions)
+                {
+                    if (!template.Questions.Any(q => q.Name == question.Name && 
+                    q.Description == question.Description &&
+                    q.IsVisible == question.IsVisible))
+                    {
+                        template.Questions.Add(question);
+                    }
+                }
+            }
+
             await templateRepository.Update(template);
         }
     }
