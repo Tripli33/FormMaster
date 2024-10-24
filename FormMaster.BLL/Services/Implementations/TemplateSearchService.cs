@@ -1,4 +1,5 @@
 ﻿using Elastic.Clients.Elasticsearch;
+using FormMaster.BLL.DTOs;
 using FormMaster.BLL.Services.Contracts;
 using FormMaster.DAL.Entities;
 
@@ -13,14 +14,14 @@ public class TemplateSearchService(ElasticsearchClient client) : ITemplateSearch
         await client.Indices.DeleteAsync(Index);
     }
 
-    public async Task AddIndexAsync(Template template)
+    public async Task AddIndexAsync(SearchTemplateDto template)
     {
-        await client.IndexAsync(template);
+        var result = await client.IndexAsync(template);
     }
 
-    public async Task<IEnumerable<Template>> SearchTemplatesByTagAsync(string tagName)
+    public async Task<IEnumerable<SearchTemplateDto>> SearchTemplatesByTagAsync(string tagName)
     {
-        var response = await client.SearchAsync<Template>(t => t
+        var response = await client.SearchAsync<SearchTemplateDto>(t => t
             .Index(Index)
             .Query(q => q
                 .Match(m => m
@@ -33,9 +34,9 @@ public class TemplateSearchService(ElasticsearchClient client) : ITemplateSearch
         return response.Documents.AsEnumerable();
     }
 
-    public async Task<IEnumerable<Template>> SearchTemplatesAsync(string searchTerm)
+    public async Task<IEnumerable<SearchTemplateDto>> SearchTemplatesAsync(string searchTerm)
     {
-        var response = await client.SearchAsync<Template>(t => t
+        var response = await client.SearchAsync<SearchTemplateDto>(t => t
             .Index(Index)
             .Query(q => q
                 .Bool(b => b

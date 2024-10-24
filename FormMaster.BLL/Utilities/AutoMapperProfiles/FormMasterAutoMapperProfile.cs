@@ -19,5 +19,10 @@ public class FormMasterAutoMapperProfile : Profile
         CreateMap<Template, UserTemplateManipulationDto>();
         CreateMap<Form, TemplateFormDto>();
         CreateMap<Template, HomeTemplateManipulationDto>();
+        CreateMap<Tag, SearchTagDto>();
+        CreateMap<Template, SearchTemplateDto>();
+        CreateMap<User, SearchUserDto>();
+        CreateMap<SearchUserDto, User>();
+        CreateMap<SearchTemplateDto, HomeTemplateManipulationDto>();
     }
 }

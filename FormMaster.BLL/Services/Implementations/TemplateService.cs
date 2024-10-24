@@ -54,7 +54,10 @@ public class TemplateService(ITemplateRepository templateRepository,
         }
 
         await templateRepository.Add(template);
-        await templateSearchService.AddIndexAsync(template);
+        var userForIndex = await templateRepository.GetByCondition(t => t.TemplateId == template.TemplateId)
+            .Include(t => t.User).FirstOrDefaultAsync();
+        var templateDto = mapper.Map<SearchTemplateDto>(userForIndex);
+        await templateSearchService.AddIndexAsync(templateDto);
 
         return template;
     }

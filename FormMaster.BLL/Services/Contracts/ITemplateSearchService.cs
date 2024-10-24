@@ -1,11 +1,11 @@
-﻿using FormMaster.DAL.Entities;
+﻿using FormMaster.BLL.DTOs;
 
 namespace FormMaster.BLL.Services.Contracts;
 
 public interface ITemplateSearchService
 {
-    Task<IEnumerable<Template>> SearchTemplatesAsync(string searchTerm);
-    Task<IEnumerable<Template>> SearchTemplatesByTagAsync(string tagName);
-    Task AddIndexAsync(Template template);
+    Task<IEnumerable<SearchTemplateDto>> SearchTemplatesAsync(string searchTerm);
+    Task<IEnumerable<SearchTemplateDto>> SearchTemplatesByTagAsync(string tagName);
+    Task AddIndexAsync(SearchTemplateDto template);
     Task DeleteIndexAsync();
 }
