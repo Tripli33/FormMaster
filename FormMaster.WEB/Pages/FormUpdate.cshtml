@@ -1,0 +1,44 @@
+﻿@page
+@using FormMaster.DAL.Entities
+@model FormMaster.WEB.Pages.FormUpdateModel
+@{
+    ViewData["Title"] = "Form update page";
+}
+
+<form method="post" asp-page-handler="Update" class="p-4 bg-light border rounded shadow-sm">
+    @{
+        var answers = Model.Form.Answers.ToList();
+    }
+    @for (int i = 0; i < answers.Count; i++)
+    {
+        var answer = answers[i];
+        <div class="mb-4">
+            <label class="form-label fw-bold">@answer.Question.Name</label>
+            <p class="text-muted">@answer.Question.Description</p>
+
+            @switch (answer.Question.QuestionType)
+            {
+                case QuestionType.SingleLine:
+                    <input name="Answers[@i].QuestionId" type="hidden" value="@answer.QuestionId" />
+                    <input name="Answers[@i].Name" type="text" class="form-control" value="@answer.Name" required />
+                    break;
+                case QuestionType.MutipleLine:
+                    <input name="Answers[@i].QuestionId" type="hidden" value="@answer.QuestionId" />
+                    <textarea name="Answers[@i].Name" class="form-control" rows="3" required>@answer.Name</textarea>
+                    break;
+                case QuestionType.PositiveInt:
+                    <input name="Answers[@i].QuestionId" type="hidden" value="@answer.QuestionId" />
+                    <input name="Answers[@i].Name" type="number" class="form-control" value="@answer.Name" required />
+                    break;
+                case QuestionType.Checkbox:
+                    <div class="form-check">
+                        <input name="Answers[@i].QuestionId" type="hidden" value="@answer.QuestionId" />
+                        <input name="Answers[@i].Name" type="checkbox" value="true" class="form-check-input" @(answer.Name == "true" ? "checked" : "") />
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    break;
+            }
+        </div>
+    }
+    <button type="submit" class="btn btn-primary w-100">Update Answers</button>
+</form>

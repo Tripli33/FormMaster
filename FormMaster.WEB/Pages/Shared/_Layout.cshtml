@@ -23,10 +23,16 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        </li>
                         @if (User.Identity!.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/TemplateConstructor">Template Constructor</a>
+                            </li>
+                            <li>
+                                <a class="nav-link text-dark" href="/User?UserId=@User.FindFirstValue(ClaimTypes.NameIdentifier)">Profile</a>
                             </li>
                             @if (User.HasClaim(ClaimTypes.Role, IdentityRoleConstants.Admin.ToString()))
                             {
@@ -44,6 +50,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
                             </li>
                         }
+                        <li class ="nav-item">
+                            <form method="post" asp-page="SearchResult" asp-page-handler="SearchByTerm" class="d-flex ms-auto">
+                                <input class="form-control me-2" type="search" name="search" placeholder="Search">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                        </li>
                     </ul>
                     @if (User.Identity!.IsAuthenticated)
                     {

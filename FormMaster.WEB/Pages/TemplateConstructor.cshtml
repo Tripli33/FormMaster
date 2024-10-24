@@ -1,60 +1,59 @@
 ﻿@page
 @model FormMaster.WEB.Pages.TemplateConstructorModel
 @{
+    ViewData["Title"] = "Template constructor";
 }
 
-<form method="post">
-    <button type="submit">Save</button>
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="body-tab" data-bs-toggle="tab" data-bs-target="#body" type="button" role="tab" aria-controls="body" aria-selected="true">Body</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="questions-tab" data-bs-toggle="tab" data-bs-target="#questions" type="button" role="tab" aria-controls="questions" aria-selected="false">Questions</button>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="body" role="tabpanel" aria-labelledby="body-tab">
-            <div class="form-group">
-                <label asp-for="RegistrationDto.Name"></label>
-                <input class="form-control" asp-for="RegistrationDto.Name" />
-                <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Name"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegistrationDto.TopicId"></label>
-                <select asp-for="RegistrationDto.TopicId" asp-items="@Model.Topics" placeholder="select members" class="form-control dropdown">
-                </select>
-                <span class="text-danger validation-message" asp-validation-for="RegistrationDto.TopicId"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegistrationDto.Description"></label>
-                <input class="form-control" asp-for="RegistrationDto.Description" />
-                <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Description"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegistrationDto.IsPublic"></label>
-                <input class="form-check-label" id="is-public-check-box" asp-for="RegistrationDto.IsPublic" />
-            </div>
-            <div class="form-group">
-                <label asp-for="RegistrationDto.Tags"></label>
-                <input id="tags-input" asp-for="RegistrationDto.Tags" />
-                <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Tags"></span>
-            </div>
-            <div class="form-group" id="allowed-users">
-                <label asp-for="RegistrationDto.AllowedUsers"></label>
-                <input id="users-input" asp-for="RegistrationDto.AllowedUsers" />
-                <span class="text-danger validation-message" asp-validation-for="RegistrationDto.AllowedUsers"></span>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="questions" role="tabpanel" aria-labelledby="questions-tab">
-        </div>
+<form method="post" class="p-4 bg-light border rounded shadow-sm">
+    <h3 class="mb-4">Registration Form</h3>
+
+    <div class="form-group mb-3">
+        <label asp-for="RegistrationDto.Name" class="form-label fw-bold"></label>
+        <input class="form-control" asp-for="RegistrationDto.Name" />
+        <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Name"></span>
     </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="RegistrationDto.TopicId" class="form-label fw-bold"></label>
+        <select asp-for="RegistrationDto.TopicId" asp-items="@Model.Topics" class="form-control">
+            <option value="">Select members</option>
+        </select>
+        <span class="text-danger validation-message" asp-validation-for="RegistrationDto.TopicId"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="RegistrationDto.Description" class="form-label fw-bold"></label>
+        <textarea class="form-control" asp-for="RegistrationDto.Description"></textarea>
+        <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Description"></span>
+    </div>
+
+    <div class="form-group mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="is-public-check-box" asp-for="RegistrationDto.IsPublic" />
+        <label class="form-check-label" asp-for="RegistrationDto.IsPublic"></label>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="RegistrationDto.Tags" class="form-label fw-bold"></label>
+        <input id="tags-input" class="form-control" asp-for="RegistrationDto.Tags" />
+        <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Tags"></span>
+    </div>
+
+    <div class="form-group mb-3" id="allowed-users">
+        <label asp-for="RegistrationDto.AllowedUsers" class="form-label fw-bold"></label>
+        <input id="users-input" class="form-control" asp-for="RegistrationDto.AllowedUsers" />
+        <span class="text-danger validation-message" asp-validation-for="RegistrationDto.AllowedUsers"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">Next</button>
 </form>
 
+
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@yaireo/tagify"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 
     <script>
         const tagsFromViewData = @Html.Raw(ViewData["Tags"]);
@@ -83,16 +82,26 @@
     </script>
 
     <script>
+        const simplemde = new SimpleMDE({ element: document.querySelector("textarea") });
+    </script>
+
+    <script>
         const allowedUsersSection = document.querySelector('#allowed-users');
         const isPublicCheckbox = document.querySelector('#is-public-check-box');
 
-        isPublicCheckbox.addEventListener("change", () => {
+        function updateAllowedUsersSection() {
             if (isPublicCheckbox.checked) {
                 allowedUsersSection.style.display = "none";
             } else {
                 allowedUsersSection.style.display = "block";
             }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            updateAllowedUsersSection();
         });
+
+        isPublicCheckbox.addEventListener("change", updateAllowedUsersSection);
     </script>
 }
     

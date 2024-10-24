@@ -1,47 +1,54 @@
 using FormMaster.BLL.DTOs;
 using FormMaster.BLL.Services;
+using FormMaster.BLL.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using System.Text.Json;
 
+namespace FormMaster.WEB.Pages;
 
-namespace FormMaster.WEB.Pages
+[Authorize]
+public class TemplateConstructorModel(ITagService tagService, IUserService userService, 
+    ITopicService topicService, ITemplateService templateService) : PageModel
 {
-    public class TemplateConstructorModel(ITagService tagService, IUserService userService, ITopicService topicService) : PageModel
+    [BindProperty]
+    public TemplateRegistrationDto? RegistrationDto { get; set; }
+    public SelectList? Topics { get; set; }
+
+    public async Task OnGetAsync()
     {
-        [BindProperty]
-        public TemplateRegistrationDto RegistrationDto { get; set; }
-        public SelectList? Topics { get; set; }
+        var topics = await topicService.GetAllAsync();
+        Topics = new SelectList(topics, "TopicId", "Name");
+        var tags = await tagService.GetAllAsync();
+        var users = await userService.GetAllAsync();
+        ViewData["Tags"] = JsonSerializer.Serialize(tags);
+        ViewData["Users"] = JsonSerializer.Serialize(users);
+        TempData["Topics"] = JsonSerializer.Serialize(topics);
+        TempData["Tags"] = ViewData["Tags"];
+        TempData["Users"] = ViewData["Users"];
+    }
 
-        public async Task OnGetAsync()
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
         {
-            var topics = await topicService.GetAllAsync();
+            ViewData["Tags"] = TempData["Tags"];
+            ViewData["Users"] = TempData["Users"];
+            var topicsData = TempData["Topics"] as string;
+            var topics = JsonSerializer.Deserialize<List<TopicTemplateManipulationDto>>(topicsData ?? string.Empty);
             Topics = new SelectList(topics, "TopicId", "Name");
-            var tags = await tagService.GetAllAsync();
-            var users = await userService.GetAllAsync();
-            ViewData["Tags"] = JsonSerializer.Serialize(tags);
-            ViewData["Users"] = JsonSerializer.Serialize(users);
-            TempData["Topics"] = JsonSerializer.Serialize(topics);
-            TempData["Tags"] = ViewData["Tags"];
-            TempData["Users"] = ViewData["Users"];
+            TempData.Keep();
+
+            return Page();
         }
 
-        public IActionResult OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                ViewData["Tags"] = TempData["Tags"];
-                ViewData["Users"] = TempData["Users"];
-                var topicsData = TempData["Topics"] as string;
-                var topics = JsonSerializer.Deserialize<List<TopicTemplateManipulationDto>>(topicsData ?? string.Empty);
-                Topics = new SelectList(topics, "TopicId", "Name");
-                TempData.Keep();
+        var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var template = await templateService.CreateAsync(Convert.ToInt32(userId), RegistrationDto!);
+        TempData.Clear();
 
-                return Page();
-            }
-
-            return RedirectToPage();
-        }
+        return RedirectToPage("QuestionsConstructor", new { template.TemplateId });
     }
 }

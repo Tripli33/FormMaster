@@ -1,4 +1,6 @@
 ﻿@page
+@using FormMaster.BLL.DTOs
+@using Markdig
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -6,5 +8,60 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h4 class="fw-bold">Top 5 Templates</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Author</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var template in Model.TopTemplates)
+            {
+                <tr>
+                    <td>@template.Name</td>
+                    @{
+                        var markdownDescription = Markdown.ToHtml(template?.Description ?? string.Empty);
+                    }
+                    <td>@Html.Raw(markdownDescription)</td>
+                    <td>@template.User.UserName</td>
+                    <td>
+                        <a class="btn btn-primary" href="/Template?TemplateId=@template.TemplateId">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4 class="fw-bold">Latest Templates</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Author</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var template in Model.LatestTemplates)
+                {
+                    <tr>
+                        <td>@template.Name</td>
+                        @{
+                            var markdownDescription = Markdown.ToHtml(template?.Description ?? string.Empty);
+                        }
+                        <td>@Html.Raw(markdownDescription)</td>
+                        <td>@template.User.UserName</td>
+                        <td>
+                            <a class="btn btn-primary" href="/Template?TemplateId=@template.TemplateId">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

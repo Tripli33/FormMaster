@@ -5,35 +5,40 @@
     ViewData["Title"] = "Admin panel page";
 }
 
-<form method="post">
-    <div>
-        <button asp-page-handler="block">Block</button>
-        <button asp-page-handler="unblock">Unblock</button>
-        <button asp-page-handler="promote">Promote</button>
-        <button asp-page-handler="demote">Demote</button>
-        <button asp-page-handler="delete">Delete</button>
+<form method="post" class="p-3 bg-light border rounded">
+    <div class="mb-3 d-flex justify-content-between">
+        <button asp-page-handler="block" class="btn btn-warning">Block</button>
+        <button asp-page-handler="unblock" class="btn btn-info">Unblock</button>
+        <button asp-page-handler="promote" class="btn btn-success">Promote</button>
+        <button asp-page-handler="demote" class="btn btn-secondary">Demote</button>
+        <button asp-page-handler="delete" class="btn btn-danger">Delete</button>
     </div>
-    <table class="table table-bordered">
-        <thead>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
             <tr>
-                <th></th>
+                <th scope="col"></th>
                 <th scope="col">Id</th>
                 <th scope="col">Name</th>
                 <th scope="col">E-mail</th>
-                <th scope="col">IsBLocked</th>
+                <th scope="col">IsBlocked</th>
                 <th scope="col">IsAdmin</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var user in Model.ManipulationDtos ?? Enumerable.Empty<AdminUserManipulationDto>())
             {
                 <tr>
-                    <td><input name="AreChecked" type="checkbox" value="@user.Id" /></td>
+                    <td><input name="AreChecked" type="checkbox" value="@user.Id" class="form-check-input" /></td>
                     <td>@user.Id</td>
                     <td>@user.UserName</td>
                     <td>@user.Email</td>
                     <td>@(user.IsBlocked ? "Yes" : "No")</td>
                     <td>@(user.IsAdmin ? "Yes" : "No")</td>
+                    <td>
+                        <a class="btn btn-primary" href="/User?UserId=@user.Id">View</a>
+                    </td>
                 </tr>
             }
         </tbody>

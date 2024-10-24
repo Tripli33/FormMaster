@@ -1,0 +1,67 @@
+﻿@page
+@using FormMaster.BLL.DTOs
+@model FormMaster.WEB.Pages.QuestionsConstructorModel
+@{
+    ViewData["Title"] = "Questions constructor";
+}
+
+<h3 class="mb-4">Questions Constructor</h3>
+<form method="post" asp-page-handler="AddQuestion" class="p-4 bg-light border rounded shadow-sm">
+    <div class="form-group mb-3">
+        <label asp-for="QuestionRegistrationDto.Name" class="form-label fw-bold"></label>
+        <input class="form-control" asp-for="QuestionRegistrationDto.Name" />
+        <span class="text-danger" asp-validation-for="QuestionRegistrationDto.Name"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="QuestionRegistrationDto.Description" class="form-label fw-bold"></label>
+        <textarea class="form-control" asp-for="QuestionRegistrationDto.Description"></textarea>
+        <span class="text-danger" asp-validation-for="QuestionRegistrationDto.Description"></span>
+    </div>
+    <div class="form-group mb-3 form-check">
+        <input type="checkbox" class="form-check-input" asp-for="QuestionRegistrationDto.IsVisible" />
+        <label class="form-check-label" asp-for="QuestionRegistrationDto.IsVisible"></label>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="QuestionRegistrationDto.QuestionType" class="form-label fw-bold"></label>
+        <select class="form-control" asp-for="QuestionRegistrationDto.QuestionType" asp-items="Model.QuestionTypes">
+            <option value="">Select Question Type</option>
+        </select>
+        <span class="text-danger" asp-validation-for="QuestionRegistrationDto.QuestionType"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+<h3 class="mt-5">Questions List</h3>
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Question Type</th>
+            <th>Is Visible</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Questions?.Count; i++)
+        {
+            <tr>
+                <td>@Model.Questions[i].Name</td>
+                <td>@Model.Questions[i].Description</td>
+                <td>@Model.Questions[i].QuestionType</td>
+                <td>@(Model.Questions[i].IsVisible ? "Yes" : "No")</td>
+                <td>
+                    <form method="post" class="d-inline">
+                        <input type="hidden" name="index" value="@i" />
+                        <button type="submit" asp-page-handler="DeleteQuestion" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form method="post" asp-page-handler="Submit" class="mt-4">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <button type="submit" class="btn btn-success">Submit All Questions</button>
+</form>

@@ -1,0 +1,131 @@
+﻿@page
+@model FormMaster.WEB.Pages.TemplateModel
+@using FormMaster.DAL.Entities
+@using Markdig
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "Template page";
+    var markdownDescription = Markdown.ToHtml(Model.Template.Description);
+}
+
+<div class="container mt-4">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="template-tab" data-bs-toggle="tab" data-bs-target="#template" type="button" role="tab" aria-controls="template" aria-selected="true">Template</button>
+        </li>
+        @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.Template.User.Id.ToString() ||
+        User.HasClaim(ClaimTypes.Role, IdentityRoleConstants.Admin.ToString()))
+        {
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="forms-tab" data-bs-toggle="tab" data-bs-target="#forms" type="button" role="tab" aria-controls="forms" aria-selected="false">Forms</button>
+            </li>
+        }
+    </ul>
+
+    <div class="tab-content mt-4" id="myTabContent">
+        <div class="tab-pane fade show active" id="template" role="tabpanel" aria-labelledby="template-tab">
+            <div class="mb-4">
+                <div class="d-flex flex-wrap">
+                    @foreach (var tag in Model.Template.Tags)
+                    {
+                        <span class="badge bg-secondary me-2 mb-2">@tag.Name</span>
+                    }
+                </div>
+            </div>
+            <div class="mb-4">
+                <h3 class="fw-bold">@Model.Template.Name</h3>
+                <div>
+                    <strong>Created on:</strong> <span class="text-muted">@Model.Template.CreationDate.ToShortDateString()</span>
+                </div>
+                <div>
+                    <strong>Topic:</strong> <span class="text-muted">@Model.Template.Topic.Name</span>
+                </div>
+                <div>
+                    <strong>User:</strong> <span class="text-muted">@Model.Template.User.UserName</span>
+                </div>
+            </div>
+            <div class="card p-3 mb-4">
+                @Html.Raw(markdownDescription)
+            </div>
+            <div class="mb-4">
+                <h4 class="fw-bold">Questions List</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Question Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.Template.User.Id.ToString() ||
+                        User.HasClaim(ClaimTypes.Role, IdentityRoleConstants.Admin.ToString()))
+                        {
+                            @foreach (var question in Model.Template.Questions)
+                            {
+                                <tr>
+                                    <td>@question.Name</td>
+                                    <td>@question.Description</td>
+                                    <td>@question.QuestionType</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            @foreach (var question in Model.Template.Questions.Where(q => q.IsVisible))
+                            {
+                                <tr>
+                                    <td>@question.Name</td>
+                                    <td>@question.Description</td>
+                                    <td>@question.QuestionType</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.Template.User.Id.ToString() ||
+                User.HasClaim(ClaimTypes.Role, IdentityRoleConstants.Admin.ToString()))
+                {
+                    <form method="post" asp-page-handler="Update" class="mb-4">
+                        <button type="submit" class="btn btn-warning">Update</button>
+                    </form>
+                }
+                <form method="post" asp-page-handler="Solve" class="mb-4">
+                    <button type="submit" class="btn btn-warning">Solve</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="forms" role="tabpanel" aria-labelledby="forms-tab">
+            <h3 class="fw-bold">Forms</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>E-mail</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var form in Model.FormDtos)
+                    {
+                        <tr>
+                            <td>@form.UserId</td>
+                            <td>@form.User.UserName</td>
+                            <td>@form.User.Email</td>
+                            <td>
+                                <a class="btn btn-primary" href="/FormResult?FormId=@form.FormId">View Form</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+

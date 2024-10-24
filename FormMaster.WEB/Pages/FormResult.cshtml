@@ -1,0 +1,36 @@
+﻿@page
+@using System.Security.Claims
+@using FormMaster.DAL.Entities
+@model FormMaster.WEB.Pages.FormResultModel
+@{
+    ViewData["Title"] = "Form result page";
+}
+
+<div class="p-4 bg-light border rounded shadow-sm">
+    @{
+        var answers = Model.Form.Answers;
+    }
+    @foreach (var answer in answers)
+    { 
+        <div class="mb-4">
+            <label class="form-label fw-bold">@answer.Question.Name</label>
+            <p class="text-muted">@answer.Question.Description</p>
+
+            <div class="form-control">
+                @answer.Name
+            </div>
+        </div>        
+    }
+    <div class="mb-3 d-flex justify-content-between">
+        @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.Form.UserId.ToString() ||
+        User.HasClaim(ClaimTypes.Role, IdentityRoleConstants.Admin.ToString()))
+        {
+            <form method="post" asp-page-handler="Update" class="mb-4">
+                <button type="submit" class="btn btn-warning">Update</button>
+            </form>
+            <form method="post" asp-page-handler="Delete" class="mb-4">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        }
+    </div>
+</div>

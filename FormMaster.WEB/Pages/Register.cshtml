@@ -4,23 +4,28 @@
     ViewData["Title"] = "Register page";
 }
 
-<form method="post">
-    <div class="form-group">
-        <label asp-for="RegistrationDto.UserName"></label>
+<form method="post" class="p-4 bg-light border rounded shadow-sm">
+    <h3 class="mb-4">Register</h3>
+    
+    <div class="form-group mb-3">
+        <label asp-for="RegistrationDto.UserName" class="form-label fw-bold"></label>
         <input class="form-control" asp-for="RegistrationDto.UserName" />
         <span class="text-danger validation-message" asp-validation-for="RegistrationDto.UserName"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="RegistrationDto.Email"></label>
-        <input class="form-control" asp-for="RegistrationDto.Email" />
+
+    <div class="form-group mb-3">
+        <label asp-for="RegistrationDto.Email" class="form-label fw-bold"></label>
+        <input type="email" class="form-control" asp-for="RegistrationDto.Email" />
         <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Email"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="RegistrationDto.Password"></label>
-        <input class="form-control" asp-for="RegistrationDto.Password" />
+
+    <div class="form-group mb-3">
+        <label asp-for="RegistrationDto.Password" class="form-label fw-bold"></label>
+        <input type="password" class="form-control" asp-for="RegistrationDto.Password" />
         <span class="text-danger validation-message" asp-validation-for="RegistrationDto.Password"></span>
     </div>
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <br />
-    <button type="submit" class="btn btn-success">Register</button>
+
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    
+    <button type="submit" class="btn btn-success w-100">Register</button>
 </form>

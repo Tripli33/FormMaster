@@ -1,0 +1,44 @@
+﻿@page
+@using FormMaster.DAL.Entities
+@model FormMaster.WEB.Pages.FormModel
+@{
+    ViewData["Title"] = "Form page";
+}
+
+<form method="post" asp-page-handler="Submit" class="p-4 bg-light border rounded shadow-sm">
+    @{
+        var questions = Model.Questions.ToList();
+    }
+    @for (int i = 0; i < questions.Count(); i++)
+    {
+        var question = questions[i];
+        <div class="mb-4">
+            <label class="form-label fw-bold">@question.Name</label>
+            <p class="text-muted">@question.Description</p>
+
+            @switch (question.QuestionType)
+            {
+                case QuestionType.SingleLine:
+                    <input name="Answers[@i].QuestionId" type="hidden" value="@question.QuestionId" />
+                    <input name="Answers[@i].Name" type="text" class="form-control" required />
+                    break;
+                case QuestionType.MutipleLine:
+                    <input name="Answers[@i].QuestionId" type="hidden" value="@question.QuestionId" />
+                    <textarea name="Answers[@i].Name" class="form-control" rows="3" required></textarea>
+                    break;
+                case QuestionType.PositiveInt:
+                    <input name="Answers[@i].QuestionId" type="hidden" value="@question.QuestionId" />
+                    <input name="Answers[@i].Name" type="number" class="form-control" required />
+                    break;
+                case QuestionType.Checkbox:
+                    <div class="form-check">
+                        <input name="Answers[@i].QuestionId" type="hidden" value="@question.QuestionId" />
+                        <input name="Answers[@i].Name" type="checkbox" value="true" class="form-check-input" />
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    break;
+            }
+        </div>
+    }
+    <button type="submit" class="btn btn-success w-100">Submit</button>
+</form>

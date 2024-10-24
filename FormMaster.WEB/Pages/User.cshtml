@@ -1,0 +1,89 @@
+﻿@page
+@using Markdig
+@model FormMaster.WEB.Pages.UserModel
+@{  
+    ViewData["Title"] = "User profile";
+}
+
+<div class="container mt-4">
+    <div class="mb-4">
+        <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="pills-templates-tab" data-bs-toggle="tab" href="#pills-templates" role="tab">Templates</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="pills-forms-tab" data-bs-toggle="tab" href="#pills-forms" role="tab">Forms</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-templates" role="tabpanel">
+                <h4 class="fw-bold">Templates List</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Public</th>
+                            <th>Creation Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var template in Model.TemplateDtos)
+                        {
+                            <tr>
+                                <td>@template.Name</td>
+                                @{
+                                    var markdownDescription = Markdown.ToHtml(template?.Description ?? string.Empty);
+                                }
+                                <td>@Html.Raw(markdownDescription)</td>
+                                <td>@(template.IsPublic ? "Yes" : "No")</td>
+                                <td>@template.CreationDate.ToShortDateString()</td>
+                                <td>
+                                    <a class="btn btn-primary" href="/Template?TemplateId=@template.TemplateId">View</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="pills-forms" role="tabpanel">
+                <h4 class="fw-bold">Forms List</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Public</th>
+                            <th>Creation Date</th>
+                            <th>Actions</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var form in Model.FormDtos)
+                        {
+                            <tr>
+                                <td>@form.Template.Name</td>
+                                @{
+                                    var markdownDescription = Markdown.ToHtml(form.Template?.Description ?? string.Empty);
+                                }
+                                <td>@Html.Raw(markdownDescription)</td>
+                                <td>@(form.Template.IsPublic ? "Yes" : "No")</td>
+                                <td>@form.Template.CreationDate.ToShortDateString()</td>
+                                <td>
+                                    <a class="btn btn-primary" href="/Template?TemplateId=@form.TemplateId">View Template</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary" href="/FormResult?FormId=@form.FormId">View Form</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
