@@ -1,6 +1,7 @@
-﻿using FormMaster.BLL.Services;
+using FormMaster.BLL.Services;
 using FormMaster.DAL.DataContext;
 using FormMaster.DAL.DataContext.Seeds;
+using FormMaster.DAL.DataContext.Triggers;
 using FormMaster.DAL.Entities;
 using FormMaster.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,10 @@ public static class ServiceExtensions
         services.AddDbContext<FormMasterDbContext>(options =>
         {
             options.UseNpgsql(connectionString);
+            options.UseTriggers(options =>
+            {
+                options.AddTrigger<UpdateTemplateCountBeforeSolveFormTrigger>();
+            });
         });
     }
 
